@@ -1,0 +1,154 @@
+﻿DV-2-XviD 0.8
+作者 qiuyingbo@gmail.com
+主页 http://projects.dup2.org/dv2xvid
+
+1. 本软件为自由软件，按 GPL 第二版发布
+   关于什么是自由软件，请参考：http://www.gnu.org/home.cn.html
+   关于什么是 GPL，请参考：http://gnu.freehostingguru.com/gpl/
+
+   DV-2-XviD 只支持从 MiniDV 采集下来的 AVI 的压缩
+   
+   数据将被压缩为原大小的 1/10 (未来计划让用户可自定义目标大小)
+   
+   音频被压缩成 96kbps 的 MP3 格式
+   视频采用 XviD 引擎压缩
+   
+2. 本软件由 Python/wxPython 编写，最后通过 py2exe 转换成 windows
+   可执行程序。
+   
+   注意：本软件的二进制运行依赖于 MSVCR71.dll，但我并没有重分发该动
+   态链接库的权利。在运行本软件二进制版本之前请先确认您的系统上已经
+   有了一套 MSVCR71.dll 的拷贝(绝多大数系统上都应该已经有了该文件)。
+   
+3. 本软件的运行依赖于一些同样是自由软件的第三方程序，感谢它们的作者！
+   a. XviD codec
+   b. LAME
+   c. VirtualDub/VirtualDubMod
+   d. Avisynth
+   e. Avisynth filters:
+    - KernelDeInt
+	- dvinfo
+
+   从 0.8 版本开始，DV-2-XviD 的二进制版本已经内置了 LAME、
+   VirtualDubMod、KernelDeInt 和 dvinfo 滤镜的二进制版本。这些工具
+   的源代码可以从以下地址下载：
+      LAME(http://lame.sourceforge.net/)
+      VirtualDubMod(http://sourceforge.net/projects/virtualdubmod)
+      KernelDeInt(http://neuron2.net/kerneldeint/kerneldeint.html)
+      dvinfo(http://www.avisynth.org/warpenterprises/)
+   DV-2-XviD 0.8 附带的这些软件的版本为:
+      LAME 3.97
+      VirtualDubMod 1.5.10.2 build 2542
+      KernelDeInt 1.4.1
+      dvinfo Build20051223
+   
+   XviD 和 Avisynth 需要各自的安装程序进行安装，本软件并没有包括它们
+      XviD(http://www.koepi.org/xvid.shtml)
+      Avisynth(http://sf.net/projects/avisynth2)
+   
+4. 程序的源代码可以用 SVN 下载
+      svn checkout http://dv2xvid.googlecode.com/svn/trunk/ dv2xvid
+
+5. 使用说明：
+   运行 DV-2-XviD.exe
+    步骤一
+      首先点击 "Add Directory"
+	  选择包含 DV AVI 文件的目录，该目录下所有合法的 DV AVI 将自动
+	  出现在 "Source List AVI" 列表框中
+	  
+	  您也可以点击 "Add File" 来加入某些指定的文件
+	  
+	  上述过程可以执行多次
+	  
+	步骤二
+	  选择 "Source List AVI" 列表中您所期望的合并在一起的文件，指定
+      目标文件名（Target AVI FILE）后，点击 "add job" 来生成一个任务
+	  
+	  上述过程可以执行多次，最后产生一个任务列表。
+	  
+	步骤三
+	  最后点击 "start job" 来执行任务列表
+	  
+	  您也可以选择任务，点击 "delete job" 来撤销添加任务的操作
+      
+6. DV-2-XviD 将在目标文件所在的目录下创建一个名为 "d2x_tmp" 的目录。
+   用于存放压缩过程中产生的一些临时文件：
+      audio.avs
+      audio.vcf
+      _.wav
+      _.mp3
+      comptest.avs
+      comptest.vcf
+      comptest.avi
+      movie.avs
+      pass1.vcf
+      pass2.vcf
+      _.avi
+      _.log
+   
+   注意：目前并不自动删除这些临时文件，您可以手工清理
+
+7. Todo 列表
+   指定最终目标的大小
+   自动调整 XviD 引擎的一些设置
+
+   欢迎报告 BUG 以及任何其它反馈。和作者联系可以通过 EMAIL，或
+   者访问作者所在的 BLOG：http://www.dup2.org/blog
+ 
+*****************************************************************
+ChangeLog
+
+*2006-10-23
+feature: 增加了对 16:9 长高比的支持. 感谢 Magnus 报告这个问题
+feature: UI 改进
+            py2exe 打包出一个 DV-2-XviD.exe
+            增加了一个程序图标，"BT 的花"
+            不再依赖于 AutoGK
+            运行期的消息窗口从 DOS 提示窗口改成放在统一的界面
+feature: 自动创建临时目录
+ bugfix: 解决了 "Add File" 失败的故障
+ bugfix: 如果压缩出现异常，线程将死锁的问题
+0.8 release
+
+*2006-09-30
+xvid.py：增加了 one-pass 的 quantizer 参数的解析
+vdub.py：增加了 comptest 步骤。和文件路径相关的一些语句优化
+avs.py：增加了 comptest 所需的 avs 生成。和文件路径相关的一些语句优化
+wxVdub.py：增加了线程处理部分，解决了以前任务执行后操作界面失去响应的问题
+0.7 发布
+
+*2006-08-30
+xvidconf.py: 删除了这个文件, 代替以 xvid.py
+xvid.py: 通过 ctypes 获得 xvid 缺省的配置? 兼容多个 XviD 版本
+vdub.py: 调用 xvid.py ? 生成 setcompdata 的方式也有所变化
+0.6 发布
+
+*2006-03-20
+avs.py: 从 Avisource 改成 Directshowsource 打开 DV 采集的 AVI
+diravi.py: 修改了输出信息的控制，便于调试
+dv_info.py: 调整日期读出的算法，适应 WinDV 采集经常包含无效信息
+0.5 发布
+
+*2005-07-22
+wxVdub.py: 调整了 AVI 文件列表框大小
+dv_info.py: 如果日期读出有问题，就继续读下一个CHUNK的日期信息
+0.4 发布
+
+*2005-07-21
+dv_info.py: 参考 OpenDML AVI File Format Extensions (Ver 1.02)，
+支持大于 1G AVI 文件的时间戳读取
+
+*2005-07-19
+解决BUG: py2exe 转换后出现 LookupError: unknown encoding 'cp936'
+0.3 发布
+
+*2005-07-18
+0.2 发布
+
+*2005-07-17
+解决有的 "xxdb" 视频中第一块 12000 字节包含不合法的时间戳的问题
+增加了一个循环处理
+增加了 wxVdub.py，使用 wxWindow 提供了一套图形操作界面
+
+*2005-07-16
+0.1 发布

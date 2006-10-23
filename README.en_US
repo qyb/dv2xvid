@@ -1,0 +1,148 @@
+DV-2-XviD 0.8
+Author: "Yingbo Qiu" <qiuyingbo@gmail.com>
+homepage: http://projects.dup2.org/dv2xvid
+
+1. DV-2-XviD is a free software. It is released under GPLv2.
+   Reference: http://www.gnu.org/
+
+   DV-2-XviD only supports compressing AVI files that are grubed 
+   from MiniDV.
+   
+   Data will be compressed to 1/10 of original size. (I'll add
+   a "Specify Target Size" option in future version)
+   
+   Target file's audio is mp3 format and the bitrate is 96kbps.
+   Target file's video is MPEG-4 XviD format. 
+   
+2. DV-2-XviD is a Python/wxPython application and should be run 
+   under Win32 platform. DV-2-XviD.exe was compiled by 'py2exe'. 
+   
+   NOTE: Binary files depend on MSVCR71.dll and the dll is not
+   included in the download package because I haven't get the
+   permission to redistribute it. YOU MUST VERIFY THAT THE DLL HAS 
+   BEEN INSTALLED IN YOU SYSTEM. Usually it has been installed in 
+   c:\windows\system32 on WinXP or c:\winnt\system32 on Win2K.
+
+3. DV-2-XviD also depends on several 3rd-party tools, including
+   a. XviD codec
+   b. LAME, a mp3 encoder
+   c. VirtualDub/VirtualDubMod
+   d. Avisynth
+   e. Avisynth filters:
+    - KernelDeInt
+	- dvinfo
+
+   From version 0.8, DV-2-XviD binary distribution has included
+   LAME, VirtualDubMod, KernelDeInt and dvinfo filter. These tools 
+   are opensource projects too. You would download their source
+   from:
+      LAME(http://lame.sourceforge.net/)
+      VirtualDubMod(http://sourceforge.net/projects/virtualdubmod)
+      KernelDeInt(http://neuron2.net/kerneldeint/kerneldeint.html)
+      dvinfo(http://www.avisynth.org/warpenterprises/)
+   DV-2-XviD 0.8 comes with:
+      LAME 3.97
+      VirtualDubMod 1.5.10.2 build 2542
+      KernelDeInt 1.4.1
+      dvinfo Build20051223
+      
+   XviD and Avisynth should be installed by their installer.
+      XviD(http://www.koepi.org/xvid.shtml)
+      Avisynth(http://sf.net/projects/avisynth2)
+   
+4. Source files was hosted by "Google Code":
+      svn checkout http://dv2xvid.googlecode.com/svn/trunk/ dv2xvid
+
+5. Usage
+   Run DV-2-XviD.exe
+    Step 1
+      CLICK "Add Directory",
+      SELECT the directory that includes source AVI files
+      
+      All valid DV AVI files should be recognizd and show in
+      "Source List AVI" form.
+	  
+	  Or CLICK "Add File" to select individual AVI files.
+	  
+	Step 2
+      In "Source List AVI", select source files that will be 
+      conjoined
+      Assign "Target AVI".
+      Click "add job" to insert a new job in the job list
+	  	  
+	Step 3
+	  Click "start job" to execute the job list
+
+6. DV-2-XviD will create a directory on where the target file will 
+   be placed in with a fixed name 'd2x_tmp' and generate several 
+   tmp files in the directory on processing, include:
+      audio.avs
+      audio.vcf
+      _.wav
+      _.mp3
+      comptest.avs
+      comptest.vcf
+      comptest.avi
+      movie.avs
+      pass1.vcf
+      pass2.vcf
+      _.avi
+      _.log
+   
+   NOTE: These file and 'd2x_tmp' directory will not to be remove 
+   automatically.
+
+7. Todo List:
+   Sepcify target size
+   Auto adjust XviD codec settings, import other matrix zone...
+ 
+*****************************************************************
+ChangeLog
+
+*2006-10-23
+feature: Support AR(16:9). thank Magnus report this issue
+feature: UI improved
+            Distribute with single DV-2-XviD.exe file
+            Not depend AutoGK
+            Remove DOS-PROMPT window, add a LogMessage window
+            Add application icon
+feature: Auto create tmp directory
+ bugfix: "Add File" fail.
+ bugfix: thread deadlock if compress error.
+0.8 release
+
+*2006-09-30
+feature: add comptest
+ bugfix: resolve GUI will lose response when began processing
+0.7 release
+
+*2006-08-30
+feature: support multiple XviD versions. (require cdll)
+0.6 release
+
+*2006-03-20
+ bugfix: Avisource -> Directshowsource
+ bugfix: support WinDV
+ bugfix: modify 'diravi.py' output
+0.5 release
+
+*2005-07-22
+0.4 release
+
+*2005-07-21
+ bugfix: support big AVI file ( > 1G)
+         reference <OpenDML AVI File Format Extensions (Ver 1.02)>
+
+*2005-07-19
+ bugfix: binary version cause "LookupError: unknown encoding 'cp936'"
+0.3 release
+
+*2005-07-18
+0.2 release
+
+*2005-07-17
+ bugfix: "xxdb" chunk maybe contain invalid datetime.
+feature: provide wxVdub.py, a GUI interface
+
+*2005-07-16
+0.1 release
