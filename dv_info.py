@@ -42,6 +42,7 @@ def readChunk(file, size, depth):
         else:
             page = (head[1] - 1)/4
             chunksize = (page + 1) * 4
+            chunksize = head[1] # bugfix for 0.8.1
 #            print ' '*depth, head[0], head[1], chunksize
             if head[0] == 'avih':
                 s = file.read(chunksize)
