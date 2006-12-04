@@ -68,7 +68,7 @@ def readChunk(file, size, depth):
                     frame = s[i:i+16]
                     idx1 = struct.unpack('<4s3I', frame)
 #                    print idx1[0], idx1[1], idx1[2], idx1[3]
-                    if idx1[0] == '00db':
+                    if idx1[0] == '00db' or idx1[0] == '00dc': # bugfix for 0.8.2, add '00dc'
                         offset.append(idx1[2] + movi_offset)
             elif head[0] == 'indx':
                 s = file.read(24)
