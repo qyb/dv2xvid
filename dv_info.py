@@ -160,7 +160,12 @@ def readtime(avifile, offset):
 def dvinfo(filename):
     global offset
     global fourcc
-
+    global super_index
+    
+    offset = [] 
+    super_index = ''
+    # bugfix for 0.8.2,  clear global var
+    
     try:
         avifile = open(filename, 'rb')
     except:
@@ -210,7 +215,11 @@ def dvinfo(filename):
                     aindex = struct.unpack('<2I', avifile.read(8))
                     offset.append(aindex[0] + si_header[7])
 #        print offset
-
+    else:
+#        print 'no super_index'
+        pass
+        
+#    print len(offset)
     if len(offset) < 2:
         avifile.close
         return None
