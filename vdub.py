@@ -177,8 +177,8 @@ def main(cmd, dst_avi, filelists, is16_9=False, output=write_log):
         output('spawn wav error: %d' % ret)
         return ret
     
-    output('%s -b 96 -h %s %s' % (lame_cmd, tmp_wav, tmp_mp3))
-    ret = os.spawnl(os.P_WAIT, lame_cmd, "lame.exe", "-b", "96", "-h", tmp_wav, tmp_mp3)
+    output('%s -b 96 -h "%s" "%s"' % (lame_cmd, tmp_wav, tmp_mp3))
+    ret = os.spawnl(os.P_WAIT, lame_cmd, "lame.exe", "-b", "96", "-h", '"%s"' % tmp_wav, '"%s"' % tmp_mp3)
     if ret != 0:
         output('spawn mp3 error: %d' % ret)
         return ret

@@ -98,6 +98,19 @@
 *****************************************************************
 ChangeLog
 
+*2007-02-13
+ bugfix: 当目标文件夹包括空格的时候，lame 命令行出错的问题
+0.8.3 release
+
+*2006-12-10
+ bugfix: 增加了对 '00dc' 的判断。用 VirtualDub 处理后，'00db' 变成 '00dc'
+ bugfix: dv_info.py 里面对 offset 全局变量的污染
+0.8.2 release
+
+*2006-11-27
+ bugfix: 对 AVI 格式理解有误，无法识别 "Scenalyzer Live 4.0" 捕获的文件
+0.8.1 release
+
 *2006-10-23
 feature: 增加了对 16:9 长高比的支持. 感谢 Magnus 报告这个问题
 feature: UI 改进
