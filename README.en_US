@@ -105,7 +105,7 @@ ChangeLog
 *2008-04-20
  bugfix: patch dvinfo to use avisynth subtitle's align argument
          http://avisynth.org/mediawiki/Subtitle
-0.8.4 release
+0.8.4 release under GPLv3
 
 *2007-02-13
  bugfix: lame.exe command error when target path containing spaces
@@ -166,4 +166,4 @@ feature: support multiple XviD versions. (require cdll)
 feature: provide wxVdub.py, a GUI interface
 
 *2005-07-16
-0.1 release
+0.1 release under GPLv2
