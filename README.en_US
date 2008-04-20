@@ -1,15 +1,15 @@
-DV-2-XviD 0.8
+DV-2-XviD 0.8.4
 Author: "Yingbo Qiu" <qiuyingbo@gmail.com>
 homepage: http://projects.dup2.org/dv2xvid
 
-1. DV-2-XviD is a free software. It is released under GPLv2.
+1. DV-2-XviD is a free software. It is released under GPLv3.
    Reference: http://www.gnu.org/
 
    DV-2-XviD only supports compressing AVI files that are grubed 
    from MiniDV.
    
-   Data will be compressed to 1/10 of original size. (I'll add
-   a "Specify Target Size" option in future version)
+   Data will be compressed to 1/10 of original size. (I may add
+   "Specify Target Size" option in future version)
    
    Target file's audio is mp3 format and the bitrate is 96kbps.
    Target file's video is MPEG-4 XviD format. 
@@ -40,17 +40,20 @@ homepage: http://projects.dup2.org/dv2xvid
       VirtualDubMod(http://sourceforge.net/projects/virtualdubmod)
       KernelDeInt(http://neuron2.net/kerneldeint/kerneldeint.html)
       dvinfo(http://www.avisynth.org/warpenterprises/)
-   DV-2-XviD 0.8 comes with:
+
+   DV-2-XviD 0.8.4 comes with:
       LAME 3.97
       VirtualDubMod 1.5.10.2 build 2542
       KernelDeInt 1.4.1
-      dvinfo Build20051223
-      
+      dvinfo Build20051223 with my patch
+   From version 0.8.4, I made a patch for dvinfo to align timestamp
+   subtitle.
+
    XviD and Avisynth should be installed by their installer.
       XviD(http://www.koepi.org/xvid.shtml)
       Avisynth(http://sf.net/projects/avisynth2)
    
-4. Source files was hosted by "Google Code":
+4. Source files and dvinfo-patch were hosted by "Google Code":
       svn checkout http://dv2xvid.googlecode.com/svn/trunk/ dv2xvid
 
 5. Usage
@@ -89,7 +92,7 @@ homepage: http://projects.dup2.org/dv2xvid
       _.avi
       _.log
    
-   NOTE: These file and 'd2x_tmp' directory will not to be remove 
+   NOTE: These files and 'd2x_tmp' directory will not to be removed
    automatically.
 
 7. Todo List:
@@ -98,6 +101,11 @@ homepage: http://projects.dup2.org/dv2xvid
  
 *****************************************************************
 ChangeLog
+
+*2008-04-20
+ bugfix: patch dvinfo to use avisynth subtitle's align argument
+         http://avisynth.org/mediawiki/Subtitle
+0.8.4 release
 
 *2007-02-13
  bugfix: lame.exe command error when target path containing spaces

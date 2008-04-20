@@ -1,8 +1,8 @@
-﻿DV-2-XviD 0.8
+﻿DV-2-XviD 0.8.4
 作者 qiuyingbo@gmail.com
 主页 http://projects.dup2.org/dv2xvid
 
-1. 本软件为自由软件，按 GPL 第二版发布
+1. 本软件为自由软件，按 GPL 第三版发布
    关于什么是自由软件，请参考：http://www.gnu.org/home.cn.html
    关于什么是 GPL，请参考：http://gnu.freehostingguru.com/gpl/
 
@@ -36,17 +36,20 @@
       VirtualDubMod(http://sourceforge.net/projects/virtualdubmod)
       KernelDeInt(http://neuron2.net/kerneldeint/kerneldeint.html)
       dvinfo(http://www.avisynth.org/warpenterprises/)
-   DV-2-XviD 0.8 附带的这些软件的版本为:
+
+   DV-2-XviD 0.8.4 附带的这些软件的版本为:
       LAME 3.97
       VirtualDubMod 1.5.10.2 build 2542
       KernelDeInt 1.4.1
-      dvinfo Build20051223
+      dvinfo Build20051223 + 我自己做的补丁
+   从 0.8.4 版本开始，我给 dvinfo 打了补丁以使用 avisynth 内置的字幕
+   对齐功能
    
    XviD 和 Avisynth 需要各自的安装程序进行安装，本软件并没有包括它们
       XviD(http://www.koepi.org/xvid.shtml)
       Avisynth(http://sf.net/projects/avisynth2)
    
-4. 程序的源代码可以用 SVN 下载
+4. 程序的源代码，包括 dvinfo 的 patch 可以用 SVN 下载
       svn checkout http://dv2xvid.googlecode.com/svn/trunk/ dv2xvid
 
 5. 使用说明：
@@ -97,6 +100,11 @@
  
 *****************************************************************
 ChangeLog
+
+*2008-04-20
+ bugfix: 更新了 dvinfo.dll, 利用 avisynth 内置的字幕对齐参数
+         http://avisynth.org/mediawiki/Subtitle
+0.8.4 release
 
 *2007-02-13
  bugfix: 当目标文件夹包括空格的时候，lame 命令行出错的问题

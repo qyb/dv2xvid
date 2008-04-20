@@ -190,9 +190,9 @@ def main(cmd, dst_avi, filelists, is16_9=False, output=write_log):
     CompData_pass1 = struct.pack('<i', 1) + xvidconf[1] + struct.pack('<i', kbytes) + tmp_log + struct.pack('<i', 0) + xvidconf[5] + xvidconf[6]
     CompData_pass2 = struct.pack('<i', 2) + xvidconf[1] + struct.pack('<i', kbytes) + tmp_log + struct.pack('<i', 0) + xvidconf[5] + xvidconf[6]
     
-    avsFileConjoin = 'Directshowsource(file0).DVInfo(file0,"rec_time",400,530,"Arial",32,$FFFFFF)'
+    avsFileConjoin = 'Directshowsource(file0).DVInfo(file0,"rec_time",size=32,text_color=$FFFFFF,align=3)'
     for i in range(1,len(filelists)):
-        avsFileConjoin += ' + Directshowsource(file%d).DVInfo(file%d,"rec_time",400,530,"Arial",32,$FFFFFF)' % (i,i)
+        avsFileConjoin += ' + Directshowsource(file%d).DVInfo(file%d,"rec_time",size=32,text_color=$FFFFFF,align=3)' % (i,i)
     
     comptest_multiple = int(seconds / 10) + 1
     if comptest_multiple > 20:
