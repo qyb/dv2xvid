@@ -1,0 +1,2 @@
+cl /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "dvinfo_EXPORTS" /FR /YX /FD /c /I"C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include" *.cpp
+link dvinfo.obj riff.obj avi.obj frame.obj kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib  /nologo /dll /machine:I386 /LIBPATH:"C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Lib" /LIBPATH:"C:\Program Files\Microsoft Visual C++ Toolkit 2003\Lib"
