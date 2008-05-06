@@ -1,4 +1,4 @@
-﻿DV-2-XviD 0.8.4
+﻿DV-2-XviD 0.9.0
 作者 qiuyingbo@gmail.com
 主页 http://projects.dup2.org/dv2xvid
 
@@ -8,11 +8,16 @@
 
    DV-2-XviD 只支持从 MiniDV 采集下来的 AVI 的压缩
    
-   数据将被压缩为原大小的 1/10 (未来计划让用户可自定义目标大小)
+   数据缺省将被压缩为原大小的 1/10
    
    音频被压缩成 96kbps 的 MP3 格式
    视频采用 XviD 引擎压缩
    
+   运行本软件之前请先安装 XviD 和 AviSynth：
+      XviD(http://www.koepi.org/xvid.shtml)
+      AviSynth(http://sf.net/projects/avisynth2)
+   目前已知可以和 XviD 1.0.x/1.1.x，AviSynth 2.5.x 一起正确运行
+
 2. 本软件由 Python/wxPython 编写，最后通过 py2exe 转换成 windows
    可执行程序。
    
@@ -44,10 +49,6 @@
       dvinfo Build20051223 + 我自己做的补丁
    从 0.8.4 版本开始，我给 dvinfo 打了补丁以使用 avisynth 内置的字幕
    对齐功能
-   
-   XviD 和 Avisynth 需要各自的安装程序进行安装，本软件并没有包括它们
-      XviD(http://www.koepi.org/xvid.shtml)
-      Avisynth(http://sf.net/projects/avisynth2)
    
 4. 程序的源代码，包括 dvinfo 的 patch 可以用 SVN 下载
       svn checkout http://dv2xvid.googlecode.com/svn/trunk/ dv2xvid
@@ -100,6 +101,11 @@
  
 *****************************************************************
 ChangeLog
+
+*2008-05-07
+feature: 可自定义目标文件大小
+ bugfix: 计算 16:9 片源应该保证目标高度是偶数
+0.9.0 release
 
 *2008-04-20
  bugfix: 更新了 dvinfo.dll, 利用 avisynth 内置的字幕对齐参数

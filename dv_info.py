@@ -1,6 +1,7 @@
 import struct
 import sys
 import datetime
+import os, stat
 
 offset = []
 fourcc = ''
@@ -167,6 +168,7 @@ def dvinfo(filename):
     # bugfix for 0.8.2,  clear global var
     
     try:
+        filesize = os.stat(filename)[stat.ST_SIZE]
         avifile = open(filename, 'rb')
     except:
         return None
@@ -241,9 +243,9 @@ def dvinfo(filename):
     end = end[0].split(' ')
     avifile.close
     if start[0] == end[0]:
-        return ["%s %s-%s" % (start[0], start[1], end[1]), diff, is16_9]
+        return ["%s %s-%s" % (start[0], start[1], end[1]), diff, is16_9, filesize]
     else:
-        return ["%s %s --- %s %s" % (start[0], start[1], end[0], end[1]), diff, is16_9]
+        return ["%s %s --- %s %s" % (start[0], start[1], end[0], end[1]), diff, is16_9, filesize]
 
 def main():
     argc = len(sys.argv)

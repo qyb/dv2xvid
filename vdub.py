@@ -89,7 +89,7 @@ def testAutoGK():
 def write_log(text):
     print text
 
-def main(cmd, dst_avi, filelists, is16_9=False, output=write_log):
+def main(cmd, dst_avi, filelists, is16_9=False, targetsize=None, output=write_log):
     #print cmd, dst_avi, filelists
     execdir = os.path.dirname(cmd)
     if execdir == '':
@@ -160,6 +160,7 @@ def main(cmd, dst_avi, filelists, is16_9=False, output=write_log):
         return
     kbytes = seconds * 340
     #2720 kbps, 1/10 of original size
+    if targetsize: kbytes = int(targetsize * 1000)
     
     avsFilelist = []
     for i in range(len(filelists)):
@@ -220,13 +221,20 @@ def main(cmd, dst_avi, filelists, is16_9=False, output=write_log):
         unit_minw = 8
         unit_minh = 6
     else:
-        unit_minw = 16
-        unit_minh = 9
+        unit_minw = 32
+        unit_minh = 18
     resolution = int(comptest_res[0] * multiple / unit_minw)
     width = resolution * unit_minw
     height = resolution * unit_minh
     if width > 720:
-        output('oops, cannot control target size')
+        print width
+        x = width / 720.0
+        print x
+        y = math.pow(x, 2)
+        print y
+        s = (kbytes / math.pow(width / 720.0, 2)) / 1000
+        print s
+        output('oops, reduce your target size to less than %.2f MB' % s)
         return
     #unit_min cannot be set to 4x3, It will cause Vdub error
     output('choose %dx%d, predict compressibility is %.2f%%' % (width,height,comptest_value*pow(float(comptest_res[0])/width,2)*100))

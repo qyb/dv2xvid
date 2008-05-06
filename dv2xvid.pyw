@@ -23,7 +23,8 @@ wildcard = "AVI source (*.avi)|*.avi|"     \
 class SrcListWindow(wx.ListCtrl):
     def __init__(self, parent):
         self.sortlist = []
-        self.seconds = 0
+        self.seconds = 0 #DV grub tools may get merged flips, seconds maybe incorrect value
+        self.srcsize = 0
         wx.ListCtrl.__init__(self, parent, -1, size=(385, 220),
                              style=wx.LC_REPORT|wx.LC_VIRTUAL|wx.LC_HRULES|wx.LC_VRULES)
         self.InsertColumn(0, "File Path")
@@ -42,7 +43,7 @@ class SrcListWindow(wx.ListCtrl):
     def SetSortList(self, l):
         self.sortlist = []
         for key in l.keys():
-            self.sortlist.append([key, l[key][0], l[key][1]])
+            self.sortlist.append([key, l[key][0], l[key][1], l[key][3]])
         self.sortlist.sort(self.cmpfunc)
         self.DeleteAllItems()
         # before SetItemCount, we must DeleteAllItems,
@@ -51,11 +52,13 @@ class SrcListWindow(wx.ListCtrl):
 
     def ItemSelected(self):
         self.seconds = 0
+        self.srcsize = 0
         ret = []
         item = self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
         while item != -1:
             ret.append(self.sortlist[item][0])
             self.seconds += self.sortlist[item][2].seconds
+            self.srcsize += self.sortlist[item][3]
             item = self.GetNextItem(item, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
         return ret
 
@@ -104,7 +107,7 @@ class JobListWindow(wx.ListCtrl):
         try:
             for job in self.joblist:
                 #print job[1]
-                vdub.main(sys.argv[0], str(job[0]), job[1], job[2], output)
+                vdub.main(sys.argv[0], str(job[0]), job[1], job[2], job[3], output)
         except:
             pass
         lockobject.release()
@@ -113,7 +116,7 @@ class JobListWindow(wx.ListCtrl):
 class MyFrame(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title,
-                          size=(400, 560),
+                          size=(400, 590),
                           style=wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
@@ -141,13 +144,19 @@ class MyFrame(wx.Frame):
         
         filelist_menu.Add(filelist_button, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM)
         self.srcListCtrl = SrcListWindow(panel)
-        self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.ChangeTimeInfo, self.srcListCtrl)
-        self.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.ChangeTimeInfo, self.srcListCtrl)
+        self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.ChangeSizeInfo, self.srcListCtrl)
+        self.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.ChangeSizeInfo, self.srcListCtrl)
         
         filelist_selectedLength = wx.BoxSizer(wx.HORIZONTAL)
-        filelist_selectedLength.Add(wx.StaticText(panel, -1, "Source Length: "))
-        self.selectedLength = wx.StaticText(panel, -1, "0 second")
+        filelist_selectedLength.Add(wx.StaticText(panel, -1, "Source Size(MB): "))
+        self.selectedLength = wx.StaticText(panel, -1, "0")
         filelist_selectedLength.Add(self.selectedLength)
+        
+        tsize = wx.BoxSizer(wx.HORIZONTAL)
+        tsize.Add(wx.StaticText(panel, -1, "Target Size(MB): "), 0, wx.ALIGN_CENTER)
+        self.tsizeCtrl = wx.TextCtrl(panel, -1, "", size=(35, 20))
+        tsize.Add(self.tsizeCtrl, 0, wx.ALIGN_CENTER)
+        tsize.Add(wx.StaticText(panel, -1, "    Default target size will be set as 1/10 of source size"), 0, wx.ALIGN_CENTER)
         
         #filelist.Add(self.srcListCtrl)
 
@@ -185,6 +194,7 @@ class MyFrame(wx.Frame):
         border.Add(filelist_menu, 0, wx.ALL, 5)
         border.Add(self.srcListCtrl, 0, wx.EXPAND | wx.EAST | wx.WEST, 5)
         border.Add(filelist_selectedLength, 0, wx.ALL, 5)
+        border.Add(tsize, 0, wx.ALL, 5)
         border.Add(target, 0, wx.ALL, 5)
         #border.Add(bsizer)
         border.Add(joblist_menu, 0, wx.ALL, 5)
@@ -248,6 +258,16 @@ class MyFrame(wx.Frame):
                 if ar16_9 != self.SrcList[f][2]:
                     wx.LogMessage("Can't mix 16:9 and 4:3 source")
                     return
+
+        try:
+            s = float(self.tsizeCtrl.GetValue())
+        except:
+            wx.LogMessage("Inalid target size %s" % self.tsizeCtrl.GetValue())
+            return
+        if s <= 0 or s > self.defaultsize:
+            wx.LogMessage("Valid target size range: [1 - %d]" % self.defaultsize)
+            return
+
         for f in files:
             tmp = {}
             for k in self.SrcList.keys():
@@ -255,8 +275,8 @@ class MyFrame(wx.Frame):
                     tmp[k] = self.SrcList[k]
             self.SrcList = tmp
         self.srcListCtrl.SetSortList(self.SrcList)
-        self.jobListCtrl.AddJob([self.dstCtrl.GetValue(), files, ar16_9])
-        self.ChangeTimeInfo()
+        self.jobListCtrl.AddJob([self.dstCtrl.GetValue(), files, ar16_9, s])
+        self.ChangeSizeInfo()
 
     def OnClickDel(self, event):
         jobs = self.jobListCtrl.ItemSelectedDel()
@@ -266,7 +286,7 @@ class MyFrame(wx.Frame):
                 if ret:
                     self.SrcList[f] = ret
         self.srcListCtrl.SetSortList(self.SrcList)
-        self.ChangeTimeInfo()
+        self.ChangeSizeInfo()
 
     def OnClickStart(self, event):
         if self.threadlock.locked():
@@ -280,12 +300,18 @@ class MyFrame(wx.Frame):
             text = text[:-1]
         wx.LogMessage(text)
     
-    def ChangeTimeInfo(self, event=None):
+    def ChangeSizeInfo(self, event=None):
+        self.defaultsize = 0.0
         self.srcListCtrl.ItemSelected()
-        if self.srcListCtrl.seconds == 0:
-            self.selectedLength.SetLabel("%d second" % self.srcListCtrl.seconds)
-        else:
-            self.selectedLength.SetLabel("%d seconds" % self.srcListCtrl.seconds)
+        if self.srcListCtrl.srcsize == 0:
+            self.tsizeCtrl.SetValue("")
+            self.selectedLength.SetLabel("0")
+            return
+        s = float(self.srcListCtrl.srcsize)/1000000
+        self.defaultsize = s
+        self.selectedLength.SetLabel("%.1f" % s)
+        s = s/10
+        self.tsizeCtrl.SetValue("%.1f" % s)
         return
     
     def OnCloseWindow(self, event):

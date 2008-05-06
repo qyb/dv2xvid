@@ -1,4 +1,4 @@
-DV-2-XviD 0.8.4
+DV-2-XviD 0.9.0
 Author: "Yingbo Qiu" <qiuyingbo@gmail.com>
 homepage: http://projects.dup2.org/dv2xvid
 
@@ -8,12 +8,16 @@ homepage: http://projects.dup2.org/dv2xvid
    DV-2-XviD only supports compressing AVI files that are grubed 
    from MiniDV.
    
-   Data will be compressed to 1/10 of original size. (I may add
-   "Specify Target Size" option in future version)
+   Default compress rate is 1/10.
    
    Target file's audio is mp3 format and the bitrate is 96kbps.
    Target file's video is MPEG-4 XviD format. 
    
+   Before run DV-2-XviD, please install XviD and AviSynth
+      XviD (http://www.koepi.org/xvid.shtml)
+      AviSynth (http://sf.net/projects/avisynth2)
+   DV-2-XviD support XviD 1.0.x/1.1.x, AviSynth 2.5.x
+
 2. DV-2-XviD is a Python/wxPython application and should be run 
    under Win32 platform. DV-2-XviD.exe was compiled by 'py2exe'. 
    
@@ -48,10 +52,6 @@ homepage: http://projects.dup2.org/dv2xvid
       dvinfo Build20051223 with my patch
    From version 0.8.4, I made a patch for dvinfo to align timestamp
    subtitle.
-
-   XviD and Avisynth should be installed by their installer.
-      XviD(http://www.koepi.org/xvid.shtml)
-      Avisynth(http://sf.net/projects/avisynth2)
    
 4. Source files and dvinfo-patch were hosted by "Google Code":
       svn checkout http://dv2xvid.googlecode.com/svn/trunk/ dv2xvid
@@ -101,6 +101,11 @@ homepage: http://projects.dup2.org/dv2xvid
  
 *****************************************************************
 ChangeLog
+
+*2008-05-07
+feature: target file size is customizable !
+ bugfix: destination height must be multiple of 2
+0.9.0 release
 
 *2008-04-20
  bugfix: patch dvinfo to use avisynth subtitle's align argument
