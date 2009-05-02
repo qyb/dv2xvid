@@ -1,4 +1,4 @@
-﻿DV-2-XviD 0.9.0
+﻿DV-2-XviD 0.9.1
 作者 qiuyingbo@gmail.com
 主页 http://projects.dup2.org/dv2xvid
 
@@ -16,7 +16,7 @@
    运行本软件之前请先安装 XviD 和 AviSynth：
       XviD(http://www.koepi.org/xvid.shtml)
       AviSynth(http://sf.net/projects/avisynth2)
-   目前已知可以和 XviD 1.0.x/1.1.x，AviSynth 2.5.x 一起正确运行
+   目前已知可以和 XviD 1.0.x/1.1.x/1.2.x，AviSynth 2.5.x 一起正确运行
 
 2. 本软件由 Python/wxPython 编写，最后通过 py2exe 转换成 windows
    可执行程序。
@@ -31,7 +31,7 @@
    c. VirtualDub/VirtualDubMod
    d. Avisynth
    e. Avisynth filters:
-    - KernelDeInt
+    - LeakKernelDeInt
 	- dvinfo
 
    从 0.8 版本开始，DV-2-XviD 的二进制版本已经内置了 LAME、
@@ -39,16 +39,17 @@
    的源代码可以从以下地址下载：
       LAME(http://lame.sourceforge.net/)
       VirtualDubMod(http://sourceforge.net/projects/virtualdubmod)
-      KernelDeInt(http://neuron2.net/kerneldeint/kerneldeint.html)
+      LeakKernelDeInt(http://avisynth.org/mediawiki/LeakKernelDeint)
       dvinfo(http://www.avisynth.org/warpenterprises/)
 
-   DV-2-XviD 0.8.4 附带的这些软件的版本为:
+   DV-2-XviD 0.9.1 附带的这些软件的版本为:
       LAME 3.97
       VirtualDubMod 1.5.10.2 build 2542
       KernelDeInt 1.4.1
       dvinfo Build20051223 + 我自己做的补丁
+
    从 0.8.4 版本开始，我给 dvinfo 打了补丁以使用 avisynth 内置的字幕
-   对齐功能
+   定位功能 (dvinfo.cpp-patch in svn)
    
 4. 程序的源代码，包括 dvinfo 的 patch 可以用 SVN 下载
       svn checkout http://dv2xvid.googlecode.com/svn/trunk/ dv2xvid
@@ -92,9 +93,8 @@
    
    注意：目前并不自动删除这些临时文件，您可以手工清理
 
-7. Todo 列表
-   指定最终目标的大小
-   自动调整 XviD 引擎的一些设置
+7. 开发任务列表
+   有时候点 "start jobs" 的时候图形界面会失去响应. 还没有找到问题
 
    欢迎报告 BUG 以及任何其它反馈。和作者联系可以通过 EMAIL，或
    者访问作者所在的 BLOG：http://www.dup2.org/blog
@@ -102,10 +102,14 @@
 *****************************************************************
 ChangeLog
 
+*2009-05-03
+ bugfix: autogk 新版本开始使用 LeakKernelDeInt
+0.9.1 release
+
 *2008-05-07
 feature: 可自定义目标文件大小
  bugfix: 计算 16:9 片源应该保证目标高度是偶数
-0.9.0 release
+0.9 release
 
 *2008-04-20
  bugfix: 更新了 dvinfo.dll, 利用 avisynth 内置的字幕对齐参数

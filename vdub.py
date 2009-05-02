@@ -108,7 +108,7 @@ def main(cmd, dst_avi, filelists, is16_9=False, targetsize=None, output=write_lo
     xvidconf = xvid.get_xvidconfig(xvidstring)
     
     dvinfo_filter = os.path.join(execdir, "filters\\dvinfo.dll")
-    deint_filter = os.path.join(base_dir, "filters\\kerneldeint.dll")
+    deint_filter = os.path.join(base_dir, "filters\\LeakKernelDeint.dll")
     lame_cmd = os.path.join(base_dir, "tools\\lame\\lame.exe")
     vdub_cmd = os.path.join(base_dir, "VDubMod\\VirtualDubMod.exe")
     
@@ -199,7 +199,7 @@ def main(cmd, dst_avi, filelists, is16_9=False, targetsize=None, output=write_lo
     if comptest_multiple > 20:
         comptest_multiple = 20
     output("comptest resolution = %d x %d" % comptest_res)
-    KernelDeInt = 'KernelDeInt(order=1,sharp=true)'
+    KernelDeInt = 'LeakKernelDeInt(order=1,sharp=true)'
     LanczosResize = 'LanczosResize(%d,%d)' % comptest_res
     SelectRangeEvery = 'SelectRangeEvery(%d,%d)' % (15*comptest_multiple, 15)
     

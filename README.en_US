@@ -1,4 +1,4 @@
-DV-2-XviD 0.9.0
+DV-2-XviD 0.9.1
 Author: "Yingbo Qiu" <qiuyingbo@gmail.com>
 homepage: http://projects.dup2.org/dv2xvid
 
@@ -16,7 +16,7 @@ homepage: http://projects.dup2.org/dv2xvid
    Before run DV-2-XviD, please install XviD and AviSynth
       XviD (http://www.koepi.org/xvid.shtml)
       AviSynth (http://sf.net/projects/avisynth2)
-   DV-2-XviD support XviD 1.0.x/1.1.x, AviSynth 2.5.x
+   DV-2-XviD support XviD 1.0.x/1.1.x/1.2.x, AviSynth 2.5.x
 
 2. DV-2-XviD is a Python/wxPython application and should be run 
    under Win32 platform. DV-2-XviD.exe was compiled by 'py2exe'. 
@@ -33,25 +33,26 @@ homepage: http://projects.dup2.org/dv2xvid
    c. VirtualDub/VirtualDubMod
    d. Avisynth
    e. Avisynth filters:
-    - KernelDeInt
+    - LeakKernelDeInt
 	- dvinfo
 
    From version 0.8, DV-2-XviD binary distribution has included
-   LAME, VirtualDubMod, KernelDeInt and dvinfo filter. These tools 
+   LAME, VirtualDubMod, LeakKernelDeInt and dvinfo filter. These tools 
    are opensource projects too. You would download their source
    from:
       LAME(http://lame.sourceforge.net/)
       VirtualDubMod(http://sourceforge.net/projects/virtualdubmod)
-      KernelDeInt(http://neuron2.net/kerneldeint/kerneldeint.html)
+      LeakKernelDeInt(http://avisynth.org/mediawiki/LeakKernelDeint)
       dvinfo(http://www.avisynth.org/warpenterprises/)
 
-   DV-2-XviD 0.8.4 comes with:
+   DV-2-XviD 0.9.1 comes with:
       LAME 3.97
       VirtualDubMod 1.5.10.2 build 2542
-      KernelDeInt 1.4.1
+      LeakKernelDeInt 1.5.4
       dvinfo Build20051223 with my patch
+
    From version 0.8.4, I made a patch for dvinfo to align timestamp
-   subtitle.
+   subtitle. (dvinfo.cpp-patch in svn)
    
 4. Source files and dvinfo-patch were hosted by "Google Code":
       svn checkout http://dv2xvid.googlecode.com/svn/trunk/ dv2xvid
@@ -96,16 +97,20 @@ homepage: http://projects.dup2.org/dv2xvid
    automatically.
 
 7. Todo List:
-   Sepcify target size
-   Auto adjust XviD codec settings, import other matrix zone...
+    . resolve bug, GUI may lose response
+    . tell me your suggestion
  
 *****************************************************************
 ChangeLog
 
+*2009-05-03
+ bugfix: run with autogk 2.55 (update to LeakKernelDeInt)
+0.9.1 release
+
 *2008-05-07
 feature: target file size is customizable !
  bugfix: destination height must be multiple of 2
-0.9.0 release
+0.9 release
 
 *2008-04-20
  bugfix: patch dvinfo to use avisynth subtitle's align argument
