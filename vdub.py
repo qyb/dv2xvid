@@ -11,6 +11,7 @@ import dv_info
 def write_lines(filename, lines):
     f = open(filename, "w")
     for line in lines:
+        if isinstance(line, unicode): line = line.encode(sys.getfilesystemencoding())
         if line[-1] == '\n':
             f.write(line)
         else:
@@ -169,8 +170,12 @@ def main(cmd, dst_avi, filelists, is16_9=False, targetsize=None, output=write_lo
     avsFileConjoin = 'Directshowsource(file0)'
     for i in range(1,len(filelists)):
         avsFileConjoin += ' + Directshowsource(file%d)' % i
-    
-    write_lines(audio_avs, avsFilelist + [avsFileConjoin])
+    try:
+        write_lines(audio_avs, avsFilelist + [avsFileConjoin])
+    except:
+        output('write audio_avs error')
+        return -1
+
     write_lines(audio_vcf, audiovcf(audio_avs, tmp_wav))
     output('%s /x /s"%s"' % (vdub_cmd, audio_vcf))
     ret = os.spawnl(os.P_WAIT, vdub_cmd, "VirtualDubMod.exe", "/x", '/s"%s"' % audio_vcf)
@@ -203,7 +208,12 @@ def main(cmd, dst_avi, filelists, is16_9=False, targetsize=None, output=write_lo
     LanczosResize = 'LanczosResize(%d,%d)' % comptest_res
     SelectRangeEvery = 'SelectRangeEvery(%d,%d)' % (15*comptest_multiple, 15)
     
-    write_lines(comptest_avs, ['LoadPlugin("%s")' % dvinfo_filter, 'LoadPlugin("%s")' % deint_filter] + avsFilelist + [avsFileConjoin, KernelDeInt, LanczosResize, SelectRangeEvery])
+    try:
+        write_lines(comptest_avs, ['LoadPlugin("%s")' % dvinfo_filter, 'LoadPlugin("%s")' % deint_filter] + avsFilelist + [avsFileConjoin, KernelDeInt, LanczosResize, SelectRangeEvery])
+    except:
+        output('write comptest_avs error')
+        return -1
+
     write_lines(comptest_vcf, comptestvcf(comptest_avs, comptest_avi, CompData_comptest))
     output('%s /x /s"%s"' % (vdub_cmd, comptest_vcf))
     ret = os.spawnl(os.P_WAIT, vdub_cmd, "VirtualDubMod.exe", "/x", '/s"%s"' % comptest_vcf)
